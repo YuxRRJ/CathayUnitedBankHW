@@ -15,13 +15,7 @@ public class OkHttpClientUtil
 {
     private Logger logger = LogManager.getLogger(this.getClass());
 
-    private OkHttpClient client;
-
-    @PostConstruct
-    public void init()
-    {
-        client = new OkHttpClient().newBuilder().build();
-    }
+    private OkHttpClient client = new OkHttpClient().newBuilder().build();
 
     public String get(String url)
     {

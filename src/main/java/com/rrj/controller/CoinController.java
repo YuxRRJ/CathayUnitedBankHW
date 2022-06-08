@@ -1,6 +1,7 @@
 package com.rrj.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rrj.config.ServiceConfigs;
 import com.rrj.utils.OkHttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,6 +24,8 @@ public class CoinController
     @GetMapping(value = "coindesk",produces = MediaType.APPLICATION_JSON_VALUE)
     public String getCoinDesk()
     {
-        String ResponseStr = client.get();
+        String responseStr = client.get(serviceConfigs.getCoinAPI());
+
+        return responseStr;
     }
 }

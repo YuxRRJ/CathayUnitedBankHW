@@ -2,7 +2,7 @@ package com.rrj.bean;
 
 import java.util.List;
 
-public class CoinInfoRep
+public class CoinInfoResp
 {
     private String updateTime;
 

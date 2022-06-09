@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rrj.bean.CoinInfo;
-import com.rrj.bean.CoinInfoRep;
+import com.rrj.bean.CoinInfoResp;
 import com.rrj.bean.CoinTable;
 import com.rrj.service.CoinTableService;
 import org.apache.logging.log4j.LogManager;
@@ -25,9 +25,9 @@ public class CoinUtil
     @Autowired
     private CoinTableService coinTableService;
 
-    public CoinInfoRep parseCoin2Bean(String coinStr)
+    public CoinInfoResp parseCoin2Bean(String coinStr)
     {
-        CoinInfoRep coinInfoRep = new CoinInfoRep();
+        CoinInfoResp coinInfoResp = new CoinInfoResp();
 
         try {
             JsonNode jsonNode = mapper.readTree(coinStr);
@@ -42,15 +42,15 @@ public class CoinUtil
             List<CoinInfo> coinInfos = parseCoinMap(jsonNode.get("bpi"),coinTypes);
             addChineseName(coinInfos);
 
-            coinInfoRep.setUpdateTime(updateTime);
-            coinInfoRep.setCoinInfos(coinInfos);
+            coinInfoResp.setUpdateTime(updateTime);
+            coinInfoResp.setCoinInfos(coinInfos);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
 
-        return coinInfoRep;
+        return coinInfoResp;
     }
 
     private List<CoinInfo> parseCoinMap(JsonNode node , Set<String> keySet) throws JsonProcessingException {

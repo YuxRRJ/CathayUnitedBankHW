@@ -1,9 +1,6 @@
 package com.rrj.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rrj.bean.CoinInfo;
-import com.rrj.bean.CoinInfoRep;
+import com.rrj.bean.CoinInfoResp;
 import com.rrj.bean.resp.ResponseWrap;
 import com.rrj.config.ServiceConfigs;
 import com.rrj.utils.CoinUtil;
@@ -18,15 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("coin")
 public class CoinController
 {
     private Logger logger = LogManager.getLogger(this.getClass());
-    private ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     private OkHttpClientUtil client;
@@ -48,12 +41,12 @@ public class CoinController
     @GetMapping(value = "info",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getCoinInfo()
     {
-        String coinInfoStr = client.get(serviceConfigs.getCoinAPI());
-        HttpStatus status = HttpStatus.ACCEPTED;
-
         ResponseWrap responseWrap = new ResponseWrap();
+        HttpStatus status = HttpStatus.OK;
+
         try {
-            CoinInfoRep coinInfoRep = coin.parseCoin2Bean(coinInfoStr);
+            String coinInfoStr = client.get(serviceConfigs.getCoinAPI());
+            CoinInfoResp coinInfoRep = coin.parseCoin2Bean(coinInfoStr);
 
             responseWrap.setContent(coinInfoRep);
 

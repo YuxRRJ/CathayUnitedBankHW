@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rrj.bean.CoinInfo;
 import com.rrj.bean.CoinInfoRep;
+import com.rrj.bean.resp.ResponseWrap;
 import com.rrj.config.ServiceConfigs;
 import com.rrj.utils.CoinUtil;
 import com.rrj.utils.OkHttpClientUtil;
@@ -50,19 +51,20 @@ public class CoinController
         String coinInfoStr = client.get(serviceConfigs.getCoinAPI());
         HttpStatus status = HttpStatus.ACCEPTED;
 
-        Map response = new HashMap();
+        ResponseWrap responseWrap = new ResponseWrap();
         try {
             CoinInfoRep coinInfoRep = coin.parseCoin2Bean(coinInfoStr);
-            response.put("content",coinInfoRep);
+
+            responseWrap.setContent(coinInfoRep);
 
 
 
         } catch (Exception e) {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.put("Exception",e.getStackTrace() );
+            responseWrap.setMsg(e.getMessage());
             logger.error(e);
         }
 
-        return new ResponseEntity(response,status);
+        return new ResponseEntity(responseWrap,status);
     }
 }

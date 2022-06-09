@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rrj.bean.CoinInfo;
 import com.rrj.bean.CoinInfoRep;
+import com.rrj.bean.CoinTable;
+import com.rrj.service.CoinTableService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -20,6 +22,8 @@ public class CoinUtil
     private ObjectMapper mapper = new ObjectMapper();
     private Logger logger = LogManager.getLogger(this.getClass());
 
+    @Autowired
+    private CoinTableService coinTableService;
 
     public CoinInfoRep parseCoin2Bean(String coinStr)
     {
@@ -36,6 +40,7 @@ public class CoinUtil
             Set<String> coinTypes = bpiMap.keySet();
 
             List<CoinInfo> coinInfos = parseCoinMap(jsonNode.get("bpi"),coinTypes);
+            addChineseName(coinInfos);
 
             coinInfoRep.setUpdateTime(updateTime);
             coinInfoRep.setCoinInfos(coinInfos);
@@ -50,11 +55,11 @@ public class CoinUtil
 
     private List<CoinInfo> parseCoinMap(JsonNode node , Set<String> keySet) throws JsonProcessingException {
         List<CoinInfo> coinInfos = new ArrayList<>();
-        CoinInfo coinInfo = new CoinInfo();
 
         for(String coinType : keySet)
         {
             Map coinMap = mapper.convertValue(node.get(coinType),Map.class);
+            CoinInfo coinInfo = new CoinInfo();
 
             double rate = (double) coinMap.get("rate_float");
 
@@ -62,9 +67,7 @@ public class CoinUtil
             coinInfo.setCoinRate(rate);
 
             coinInfos.add(coinInfo);
-
         }
-
 
         return coinInfos;
     }
@@ -80,5 +83,15 @@ public class CoinUtil
         calendar.setTime(date);
 
         return sdf.format(calendar.getTime());
+    }
+
+    private void addChineseName(List<CoinInfo> coinInfos)
+    {
+        for(CoinInfo coinInfo : coinInfos)
+        {
+            String coinType = coinInfo.getCoinType();
+            CoinTable coinTable = coinTableService.queryByCoinType(coinType);
+            coinInfo.setCoinCHNName(coinTable.getChineseName());
+        }
     }
 }

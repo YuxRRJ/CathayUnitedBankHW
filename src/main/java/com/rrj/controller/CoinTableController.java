@@ -32,9 +32,7 @@ public class CoinTableController
         try {
 
             List<CoinTable> coins = coinTableService.queryAllCoinsList();
-            String coinsStr = mapper.writeValueAsString(coins);
-
-            responseWrap.setContent(coinsStr);
+            responseWrap.setContent(coins);
 
             status = HttpStatus.OK;
 

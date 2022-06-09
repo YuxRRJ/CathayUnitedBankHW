@@ -22,11 +22,4 @@ public class StatusController
         logger.info("Service OK !");
         return "Service OK !";
     }
-
-    @GetMapping("config")
-    public String getConfig()
-    {
-        logger.info("serviceConfigs : "+serviceConfigs.getCoinAPI());
-        return serviceConfigs.getCoinAPI();
-    }
 }

@@ -4,14 +4,14 @@ import java.util.Map;
 
 public class ResponseWrap
 {
-    private String content;
+    private Object content;
     private String msg;
 
-    public String getContent() {
+    public Object getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Object content) {
         this.content = content;
     }
 

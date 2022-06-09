@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/status")
 public class StatusController
 {
+    private Logger logger = LogManager.getLogger(this.getClass());
     @Autowired
     private ServiceConfigs serviceConfigs;
-
-    private Logger logger = LogManager.getLogger(this.getClass());
 
     @GetMapping("faq")
     public String faq()

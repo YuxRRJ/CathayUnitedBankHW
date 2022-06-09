@@ -2,15 +2,16 @@ package com.rrj.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rrj.bean.CoinTable;
+import com.rrj.bean.resp.ResponseWrap;
 import com.rrj.service.CoinTableService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,17 +24,83 @@ public class CoinTableController
     @Autowired
     private CoinTableService coinTableService;
 
-    @GetMapping("query")
-    public String query()
+    @GetMapping(value = "query" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity query()
     {
-        List<CoinTable> coins = new ArrayList<>();
+        ResponseWrap responseWrap = new ResponseWrap();
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        try {
+
+            List<CoinTable> coins = coinTableService.queryAllCoinsList();
+            String coinsStr = mapper.writeValueAsString(coins);
+
+            responseWrap.setContent(coinsStr);
+
+            status = HttpStatus.OK;
+
+
+        } catch (Exception e) {
+            logger.error(e);
+            responseWrap.setMsg(e.getMessage());
+        }
+
+        return new ResponseEntity(responseWrap,status);
+    }
+    @PostMapping(value = "inset" ,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity insert(@RequestBody CoinTable coinTable)
+    {
+        ResponseWrap responseWrap = new ResponseWrap();
+        HttpStatus status = HttpStatus.LOCKED;
 
         try {
-            coins = coinTableService.queryAllCoinsList();
-            System.err.println(mapper.writeValueAsString(coins));
+            logger.info(mapper.writeValueAsString(coinTable));
+            coinTableService.insertCoin(coinTable);
+            status = HttpStatus.OK;
+
         } catch (Exception e) {
-            logger.error("查詢失敗");
+            logger.error(e);
+            responseWrap.setMsg(e.getMessage());
         }
-        return "";
+
+        return new ResponseEntity(status);
+    }
+
+    @PostMapping(value = "update" ,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity update(@RequestBody CoinTable coinTable)
+    {
+        ResponseWrap responseWrap = new ResponseWrap();
+        HttpStatus status = HttpStatus.LOCKED;
+
+        try {
+            logger.info(mapper.writeValueAsString(coinTable));
+            coinTableService.updateCoin(coinTable);
+            status = HttpStatus.OK;
+
+        } catch (Exception e) {
+            logger.error(e);
+            responseWrap.setMsg(e.getMessage());
+        }
+
+        return new ResponseEntity(status);
+    }
+
+    @PostMapping(value = "delete" ,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity delete(@RequestBody CoinTable coinTable)
+    {
+        ResponseWrap responseWrap = new ResponseWrap();
+        HttpStatus status = HttpStatus.LOCKED;
+
+        try {
+            logger.info(mapper.writeValueAsString(coinTable));
+            coinTableService.deleteCoin(coinTable);
+            status = HttpStatus.OK;
+
+        } catch (Exception e) {
+            logger.error(e);
+            responseWrap.setMsg(e.getMessage());
+            return new ResponseEntity(responseWrap,status);
+        }
+
+      return new ResponseEntity(status);
     }
 }

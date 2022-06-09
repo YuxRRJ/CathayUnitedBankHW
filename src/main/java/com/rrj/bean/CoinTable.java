@@ -1,11 +1,12 @@
 package com.rrj.bean;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="coin_chinese_Table")
+@Table(name="coin_chinese_table")
 public class CoinTable
 {
     @Id

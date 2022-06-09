@@ -12,8 +12,11 @@ spring:
     username: sa # database 用戶名
     password:  # database 密碼
 
-    jpa:
-      database-platform: org.hibernate.dialect.H2Dialect
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
 configs:
   apis:
     coinAPI: https://api.coindesk.com/v1/bpi/currentprice.json

@@ -3,6 +3,7 @@ package com.rrj.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rrj.bean.CoinTable;
 import com.rrj.bean.resp.ResponseWrap;
+import com.rrj.controller.CoinTableController;
 import com.rrj.service.CoinTableService;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;

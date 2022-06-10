@@ -1,14 +1,11 @@
 package com.rrj.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rrj.bean.CoinInfo;
 import com.rrj.bean.CoinInfoResp;
 import com.rrj.bean.resp.ResponseWrap;
 import com.rrj.config.ServiceConfigs;
 import com.rrj.excutor.CoinExecutor;
-import com.rrj.utils.CoinUtil;
 import com.rrj.utils.OkHttpClientUtil;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;

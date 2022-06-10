@@ -4,11 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rrj.bean.CoinInfo;
-import com.rrj.bean.CoinInfoResp;
 import com.rrj.bean.CoinTable;
 import com.rrj.service.CoinTableService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +17,6 @@ import java.util.*;
 public class CoinUtil
 {
     private ObjectMapper mapper = new ObjectMapper();
-    private Logger logger = LogManager.getLogger(this.getClass());
 
     @Autowired
     private CoinTableService coinTableService;
@@ -31,6 +27,9 @@ public class CoinUtil
         for(String coinType : keySet)
         {
             Map coinMap = mapper.convertValue(node.get(coinType),Map.class);
+            if (Objects.isNull(coinMap))
+                return coinInfos;
+
             CoinInfo coinInfo = new CoinInfo();
 
             double rate = (double) coinMap.get("rate_float");
@@ -59,6 +58,8 @@ public class CoinUtil
 
     public void addChineseName(List<CoinInfo> coinInfos)
     {
+        if(Objects.isNull(coinInfos))
+            return;
         for(CoinInfo coinInfo : coinInfos)
         {
             String coinType = coinInfo.getCoinType();

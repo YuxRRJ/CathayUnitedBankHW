@@ -25,35 +25,7 @@ public class CoinUtil
     @Autowired
     private CoinTableService coinTableService;
 
-    public CoinInfoResp parseCoin2Bean(String coinStr)
-    {
-        CoinInfoResp coinInfoResp = new CoinInfoResp();
-
-        try {
-            JsonNode jsonNode = mapper.readTree(coinStr);
-            logger.info(jsonNode);
-
-            String originUpdateTime = jsonNode.get("time").get("updated").asText();
-            String updateTime = parseTimeFormat(originUpdateTime);
-
-            Map bpiMap = mapper.convertValue(jsonNode.get("bpi"),Map.class);
-            Set<String> coinTypes = bpiMap.keySet();
-
-            List<CoinInfo> coinInfos = parseCoinMap(jsonNode.get("bpi"),coinTypes);
-            addChineseName(coinInfos);
-
-            coinInfoResp.setUpdateTime(updateTime);
-            coinInfoResp.setCoinInfos(coinInfos);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-
-        return coinInfoResp;
-    }
-
-    private List<CoinInfo> parseCoinMap(JsonNode node , Set<String> keySet) throws JsonProcessingException {
+    public List<CoinInfo> parseCoinMap(JsonNode node , Set<String> keySet) throws JsonProcessingException {
         List<CoinInfo> coinInfos = new ArrayList<>();
 
         for(String coinType : keySet)
@@ -72,7 +44,7 @@ public class CoinUtil
         return coinInfos;
     }
 
-    private String parseTimeFormat(String dateTime) throws ParseException {
+    public String parseTimeFormat(String dateTime) throws ParseException {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy HH:mm:ss z", Locale.ENGLISH);
         Date date = dateFormat.parse(dateTime);
@@ -85,7 +57,7 @@ public class CoinUtil
         return sdf.format(calendar.getTime());
     }
 
-    private void addChineseName(List<CoinInfo> coinInfos)
+    public void addChineseName(List<CoinInfo> coinInfos)
     {
         for(CoinInfo coinInfo : coinInfos)
         {

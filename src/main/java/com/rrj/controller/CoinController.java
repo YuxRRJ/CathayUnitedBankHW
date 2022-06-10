@@ -3,7 +3,7 @@ package com.rrj.controller;
 import com.rrj.bean.CoinInfoResp;
 import com.rrj.bean.resp.ResponseWrap;
 import com.rrj.config.ServiceConfigs;
-import com.rrj.utils.CoinUtil;
+import com.rrj.excutor.CoinExecutor;
 import com.rrj.utils.OkHttpClientUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,7 +25,7 @@ public class CoinController
     private OkHttpClientUtil client;
 
     @Autowired
-    private CoinUtil coin;
+    private CoinExecutor coin;
 
     @Autowired
     private ServiceConfigs serviceConfigs;

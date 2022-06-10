@@ -7,6 +7,7 @@ import com.rrj.bean.CoinInfo;
 import com.rrj.bean.CoinInfoResp;
 import com.rrj.bean.resp.ResponseWrap;
 import com.rrj.config.ServiceConfigs;
+import com.rrj.excutor.CoinExecutor;
 import com.rrj.utils.CoinUtil;
 import com.rrj.utils.OkHttpClientUtil;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +27,7 @@ public class CoinControllerTest
     private CoinController coinController = mock(CoinController.class,CALLS_REAL_METHODS);
     private Logger logger = mock(Logger.class);
     private OkHttpClientUtil client = mock(OkHttpClientUtil.class);
-    private CoinUtil coin = mock(CoinUtil.class);
+    private CoinExecutor coin = mock(CoinExecutor.class);
     private ServiceConfigs serviceConfigs = mock(ServiceConfigs.class);
     private ObjectMapper mapper = new ObjectMapper();
 
